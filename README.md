@@ -11,3 +11,9 @@ pip install -r requirements.txt
 ```
 python minutes-scraper.py
 ```
+
+## Scrape IAB appeals
+
+```
+python appeals-scraper.py
+```
