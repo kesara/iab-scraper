@@ -17,3 +17,9 @@ python minutes-scraper.py
 ```
 python appeals-scraper.py
 ```
+
+## Scrape IAB statements
+
+```
+python statements-scraper.py
+```
