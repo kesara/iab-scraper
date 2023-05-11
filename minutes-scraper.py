@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from markdownify import markdownify as md
 from sys import stderr, exit
 
-URL= 'https://www.iab.org/documents/minutes/'
+URL = 'https://www.iab.org/documents/minutes/'
 
 
 def get_markdown(url):
