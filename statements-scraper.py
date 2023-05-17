@@ -4,12 +4,14 @@ import requests
 from bs4 import BeautifulSoup
 from markdownify import markdownify as md
 from sys import stderr, exit
+from weasyprint import HTML
 
 CSV = './statements.csv'
+BASE_URL = 'https://www.iab.org/'
 
 
-def get_markdown(url):
-    '''Get markdwon from the the URL'''
+def save_content(url, filename):
+    '''Save content as markdown. If image is present, save the PDF as well.'''
 
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
@@ -22,9 +24,20 @@ def get_markdown(url):
     # find the main content of the page
     main_content = soup.find('div', {'class': 'entry-content'})
 
-    # return markdown
-    return md(str(main_content))
+    # save markdown
+    markdown = md(str(main_content))
 
+    # write to markdown file
+    with open(f'{filename}.md', 'w') as file:
+        file.write(markdown)
+        print(f'saved to {filename}.md')
+
+    # check if images are present
+    if len(main_content.find_all('img')) > 0:
+        # save PDF file
+        html = f'<html><head></head><body>{main_content}</body></html>'
+        HTML(string=html, base_url=BASE_URL).write_pdf(f'{filename}.pdf')
+        print(f'saved to {filename}.pdf')
 
 with open(CSV, newline='') as csvfile:
     reader = csv.reader(csvfile, delimiter=',')
@@ -53,10 +66,4 @@ with open(CSV, newline='') as csvfile:
                 file.write(response.content)
                 print(f'saved to {date}.pdf')
         else:
-            # get markdown for the statment
-            markdown = get_markdown(url)
-
-            # write to file
-            with open(f'{date}.md', 'w') as file:
-                file.write(markdown)
-                print(f'saved to {date}.md')
+            save_content(url, date)
