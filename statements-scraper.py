@@ -24,6 +24,13 @@ def save_content(url, filename):
     # find the main content of the page
     main_content = soup.find('div', {'class': 'entry-content'})
 
+    # content fixes
+    for header in main_content.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+        br_tags = header.find_all('br')
+
+        for br_tag in br_tags:
+            br_tag.replace_with(' ')
+
     # save markdown
     markdown = md(str(main_content))
 
