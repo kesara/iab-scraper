@@ -1,3 +1,4 @@
+import glob
 import re
 import requests
 import yaml
@@ -72,6 +73,13 @@ for appeal in appeals:
     else:
         stderr.write(f'Can not determine meeting date from {date}')
         exit(1)
+
+    increment = 0
+    original_date = date
+    while glob.glob(f'{date}-*.*'):
+        increment += 1
+        date = f'{original_date}-{increment}'
+
     print(f'processing appeal on {date}')
 
     appeal = tds[1].text

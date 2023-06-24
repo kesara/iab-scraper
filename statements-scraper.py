@@ -1,4 +1,5 @@
 import csv
+import glob
 import re
 import requests
 from bs4 import BeautifulSoup
@@ -62,6 +63,13 @@ with open(CSV, newline='') as csvfile:
         else:
             stderr.write(f'Can not determine meeting date from {row[0]}')
             exit(1)
+
+        increment = 0
+        original_date = date
+        while glob.glob(f'{date}.*'):
+            increment += 1
+            date = f'{original_date}-{increment}'
+
         print(f'processing statement on {date}')
 
         url = row[2]

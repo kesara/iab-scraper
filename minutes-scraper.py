@@ -1,3 +1,4 @@
+import glob
 import re
 import requests
 from bs4 import BeautifulSoup
@@ -68,6 +69,12 @@ for ul in ul_list:
             else:
                 stderr.write(f'Can not determine meeting date for {url}')
                 exit(1)
+
+            increment = 0
+            original_date = date
+            while glob.glob(f'{date}.*'):
+                increment += 1
+                date = f'{original_date}-{increment}'
 
             print(f'getting {url}')
             save_content(url, date)
