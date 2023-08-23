@@ -27,6 +27,9 @@ def save_content(url, filename):
     noprints = soup.find_all("div", {"class": "noprint"})
     for noprint in noprints:
         noprint.decompose()
+    print_footer = soup.find('div', {'class': 'printfooter'})
+    if print_footer:
+        print_footer.decompose()
 
     # find the main content of the page
     main_content = soup.find("div", {"id": "content"})
